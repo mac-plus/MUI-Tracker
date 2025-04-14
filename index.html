@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cardiff MIU Tracker</title>
+  <style>
+    :root {
+      --green: #e0f9e3;
+      --yellow: #fff8e1;
+      --red: #fdecea;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f4f8;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #update-time {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .unit {
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+
+    .unit:hover {
+      transform: translateY(-2px);
+    }
+
+    .green-bg { background-color: var(--green); }
+    .yellow-bg { background-color: var(--yellow); }
+    .red-bg { background-color: var(--red); }
+
+    .unit h2 {
+      margin-top: 0;
+      color: #1e3d59;
+      font-size: 20px;
+    }
+
+    .patients {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .green-border { border: 2px solid green; color: green; }
+    .yellow-border { border: 2px solid orange; color: orange; }
+    .red-border { border: 2px solid red; color: red; }
+
+    .info {
+      font-size: 15px;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 600px) {
+      .unit h2 {
+        font-size: 18px;
+      }
+      .info, .patients {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Cardiff Area MIU Tracker</h1>
+<div id="update-time">Last updated: just now</div>
+
+<div class="unit green-bg">
+  <h2>Barry Hospital MIU</h2>
+  <div class="patients green-border">Current Patients: 3</div>
+  <div class="info">Mon–Fri: 9:00–15:30 (Appointment via NHS 111)</div>
+  <div class="info">Distance: ~10 miles from Cathays</div>
+  <div class="info">Treats: Minor wounds, sprains, rib injuries, minor head injuries</div>
+</div>
+
+<div class="unit yellow-bg">
+  <h2>Royal Gwent Hospital MIU</h2>
+  <div class="patients yellow-border">Current Patients: 15</div>
+  <div class="info">Open 24/7 (Walk-in service)</div>
+  <div class="info">Distance: ~12 miles from Cathays</div>
+  <div class="info">Treats: Minor injuries (no full A&E)</div>
+</div>
+
+<div class="unit red-bg">
+  <h2>UHW Emergency Department</h2>
+  <div class="patients red-border">Current Patients: 124</div>
+  <div class="info">Open 24/7 (Phone First via NHS 111)</div>
+  <div class="info">Location: Heath Park, Cardiff</div>
+  <div class="info">Services: Full A&E for life-threatening conditions</div>
+</div>
+
+<script>
+  function updateTime() {
+    const updateDiv = document.getElementById('update-time');
+    const now = new Date();
+    const formatted = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    updateDiv.textContent = `Last updated: ${formatted}`;
+  }
+
+  // Set timestamp on page load
+  updateTime();
+
+  // Auto-refresh every 20 minutes
+  setInterval(() => {
+    location.reload();
+  }, 1200000);
+</script>
+
+</body>
+</html>
