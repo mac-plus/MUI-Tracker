@@ -1,33 +1,46 @@
-name: Auto Update MIU Tracker
+import requests
+from bs4 import BeautifulSoup
 
-on:
-  schedule:
-    - cron: '*/30 * * * *'  # Runs every 30 minutes
-  workflow_dispatch:  # Optional: lets you trigger manually
+# Load the HTML file
+with open("index.html", "r", encoding="utf-8") as file:
+    html = file.read()
 
-jobs:
-  update-html:
-    runs-on: ubuntu-latest
+# Fetch the live page
+url = "https://aeinfo.nhs.wales/"
+response = requests.get(url)
+soup = BeautifulSoup(response.text, "html.parser")
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+# Extract patient data for each hospital
+# NOTE: These class names or structure may change depending on the live site layout
+hospitals = {
+    "Barry Hospital MIU": "Barry Hospital",
+    "Royal Gwent Hospital MIU": "Royal Gwent Hospital",
+    "University Hospital of Wales (UHW) Emergency Department": "University Hospital of Wales"
+}
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+# Find data on the page
+data = {}
+for section in soup.find_all("div", class_="ae-card"):
+    name = section.find("h2")
+    if not name:
+        continue
+    hospital_name = name.text.strip()
+    if hospital_name in hospitals.values():
+        count_tag = section.find("span", class_="ae-count")
+        if count_tag:
+            count = count_tag.text.strip()
+            data[hospital_name] = count
 
-      - name: Install Dependencies
-        run: pip install requests beautifulsoup4
+# Replace current patient numbers in HTML
+for html_name, nhs_name in hospitals.items():
+    if nhs_name in data:
+        html = html.replace(
+            f"<h2>{html_name}</h2>\n  <div class=\"patients",
+            f"<h2>{html_name}</h2>\n  <div class=\"patients".replace("Current Patients: ", f"Current Patients: {data[nhs_name]}")
+        )
 
-      - name: Run Update Script
-        run: python update_html.py
+# Save the updated HTML
+with open("index.html", "w", encoding="utf-8") as file:
+    file.write(html)
 
-      - name: Commit and Push Changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add index.html
-          git commit -m "Auto update patient numbers"
-          git push
+print("HTML updated with live patient numbers.")
