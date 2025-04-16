@@ -9,6 +9,7 @@
       --green: #e0f9e3;
       --yellow: #fff8e1;
       --red: #fdecea;
+      --grey: #ececec;
     }
 
     body {
@@ -48,6 +49,7 @@
     .green-bg { background-color: var(--green); }
     .yellow-bg { background-color: var(--yellow); }
     .red-bg { background-color: var(--red); }
+    .grey-bg { background-color: var(--grey); }
 
     .unit h2 {
       margin-top: 0;
@@ -105,12 +107,18 @@
   <div class="info">Treats: Minor injuries (no full A&E)</div>
 </div>
 
-<div class="unit red-bg">
-  <h2>UHW Emergency Department</h2>
+<div class="unit grey-bg">
+  <h2>University Hospital of Wales (UHW) Emergency Department</h2>
   <div class="patients red-border">Current Patients: 124</div>
-  <div class="info">Open 24/7 (Phone First via NHS 111)</div>
+  <div class="info">Live data may not always be available due to the Phone First system.</div>
+  <div class="info">For urgent care, call <strong>NHS 111</strong> before attending.</div>
+  <div class="info">Open 24/7 for life-threatening emergencies</div>
   <div class="info">Location: Heath Park, Cardiff</div>
-  <div class="info">Services: Full A&E for life-threatening conditions</div>
+  <div class="info"><a href="https://www.google.com/maps?q=University+Hospital+of+Wales,+Cardiff" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 12px;background:#1e90ff;color:#fff;text-decoration:none;border-radius:5px;">Get Directions</a></div>
+</div>
+  <div class="info">For urgent care, call <strong>NHS 111</strong> before attending.</div>
+  <div class="info">Open 24/7 for life-threatening emergencies</div>
+  <div class="info">Location: Heath Park, Cardiff</div>
 </div>
 
 <script>
@@ -121,14 +129,13 @@
     updateDiv.textContent = `Last updated: ${formatted}`;
   }
 
-  // Set timestamp on page load
   updateTime();
-
-  // Auto-refresh every 20 minutes
-  setInterval(() => {
-    location.reload();
-  }, 1200000);
+  setInterval(() => location.reload(), 1200000);
 </script>
+
+<div style="text-align: center; margin-top: 40px; font-size: 14px;">
+  <p>View live A&E data at <a href="https://aeinfo.nhs.wales/" target="_blank" rel="noopener">aeinfo.nhs.wales</a></p>
+</div>
 
 </body>
 </html>
